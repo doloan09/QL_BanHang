@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\Color\ColorListScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
 use App\Orchid\Screens\Examples\ExampleFieldsAdvancedScreen;
@@ -12,6 +13,8 @@ use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\Size\SizeListScreen;
+use App\Orchid\Screens\Supplier\SupplierListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -97,3 +100,40 @@ Route::screen('example-cards', ExampleCardsScreen::class)->name('platform.exampl
 Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('platform.example.advanced');
 
 //Route::screen('idea', Idea::class, 'platform.screens.idea');
+
+
+//// Platform > System > Color
+Route::prefix('colors')->group(function () {
+    Route::screen('/', ColorListScreen::class)
+        ->name('colors.index')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Color'), route('colors.index'));
+        });
+
+});
+
+//// Platform > System > Size
+Route::prefix('sizes')->group(function () {
+    Route::screen('/', SizeListScreen::class)
+        ->name('sizes.index')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Size'), route('sizes.index'));
+        });
+
+});
+
+//// Platform > System > Supplier
+Route::prefix('suppliers')->group(function () {
+    Route::screen('/', SupplierListScreen::class)
+        ->name('suppliers.index')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Supplier'), route('suppliers.index'));
+        });
+
+});
