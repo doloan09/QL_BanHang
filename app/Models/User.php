@@ -2,7 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Orchid\Access\UserAccess;
+use Orchid\Filters\Filterable;
+use Orchid\Metrics\Chartable;
 use Orchid\Platform\Models\User as Authenticatable;
+use Orchid\Screen\AsSource;
 
 /**
  * @property int $id
@@ -18,6 +24,7 @@ use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use Notifiable, UserAccess, AsSource, Filterable, Chartable, HasFactory;
     /**
      * The attributes that are mass assignable.
      *

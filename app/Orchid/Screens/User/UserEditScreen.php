@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Orchid\Access\Impersonation;
-use Orchid\Platform\Models\User;
+use App\Models\User;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -163,32 +163,36 @@ class UserEditScreen extends Screen
      */
     public function save(User $user, Request $request)
     {
-        $request->validate([
-            'user.email' => [
-                'required',
-                Rule::unique(User::class, 'email')->ignore($user),
-            ],
-        ]);
+        try {
+            $request->validate([
+                'user.email' => [
+                    'required',
+                    Rule::unique(User::class, 'email')->ignore($user),
+                ],
+            ]);
 
-        $permissions = collect($request->get('permissions'))
-            ->map(fn ($value, $key) => [base64_decode($key) => $value])
-            ->collapse()
-            ->toArray();
+            $permissions = collect($request->get('permissions'))
+                ->map(fn($value, $key) => [base64_decode($key) => $value])
+                ->collapse()
+                ->toArray();
 
-        $user->when($request->filled('user.password'), function (Builder $builder) use ($request) {
-            $builder->getModel()->password = Hash::make($request->input('user.password'));
-        });
+            $user->when($request->filled('user.password'), function (Builder $builder) use ($request) {
+                $builder->getModel()->password = Hash::make($request->input('user.password'));
+            });
 
-        $user
-            ->fill($request->collect('user')->except(['password', 'permissions', 'roles'])->toArray())
-            ->fill(['permissions' => $permissions])
-            ->save();
+            $user
+                ->fill($request->collect('user')->except(['password', 'permissions', 'roles'])->toArray())
+                ->fill(['permissions' => $permissions])
+                ->save();
 
-        $user->replaceRoles($request->input('user.roles'));
+            $user->replaceRoles($request->input('user.roles'));
 
-        Toast::info(__('User was saved.'));
+            Toast::info(__('User was saved.'));
 
-        return redirect()->route('platform.systems.users');
+            return redirect()->route('platform.systems.users');
+        }catch (\Exception $exception){
+            Toast::error('Vui lòng nhập đẩy đủ thông tin bắt buộc!');
+        }
     }
 
     /**
