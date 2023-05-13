@@ -39,6 +39,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.systems.roles')
                 ->permission('platform.systems.roles'),
 
+            Menu::make(__('Danh mục'))
+                ->icon('layers')
+                ->route('categories.index')
+                ->permission('platform.systems.categories'),
+
             Menu::make(__('Colors'))
                 ->icon('target')
                 ->route('colors.index')
@@ -49,10 +54,31 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('sizes.index')
                 ->permission('platform.systems.sizes'),
 
-            Menu::make(__('Suppliers'))
+            Menu::make(__('Nhà cung cấp'))
                 ->icon('server')
                 ->route('suppliers.index')
                 ->permission('platform.systems.suppliers'),
+
+            Menu::make(__('Sản phẩm'))
+                ->icon('module')
+                ->route('products.index')
+                ->permission('platform.systems.products'),
+
+            Menu::make(__('Đơn hàng'))
+                ->icon('basket-loaded')
+                ->list([
+                    Menu::make(__('Đơn hàng nhập'))
+                        ->icon('list')
+                        ->route('import_orders.index')
+                        ->permission('platform.systems.orders'),
+
+                    Menu::make(__('Đơn hàng bán'))
+                        ->icon('layers')
+                        ->route('sales_orders.index')
+                        ->permission('platform.systems.orders'),
+
+                ])
+                ->permission('platform.systems.orders'),
 
         ];
     }
@@ -80,7 +106,10 @@ class PlatformProvider extends OrchidServiceProvider
                 ->addPermission('platform.systems.users', __('Users'))
                 ->addPermission('platform.systems.colors', __('Colors'))
                 ->addPermission('platform.systems.sizes', __('Sizes'))
-                ->addPermission('platform.systems.suppliers', __('Suppliers')),
+                ->addPermission('platform.systems.suppliers', __('Suppliers'))
+                ->addPermission('platform.systems.products', __('Products'))
+                ->addPermission('platform.systems.orders', __('Orders'))
+                ->addPermission('platform.systems.categories', __('Categories')),
 
         ];
     }

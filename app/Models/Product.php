@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
 /**
@@ -19,7 +20,7 @@ use Orchid\Screen\AsSource;
 
 class Product extends Model
 {
-    use HasFactory, AsSource;
+    use HasFactory, AsSource, Filterable;
 
     protected $fillable = [
         'name',
@@ -29,4 +30,15 @@ class Product extends Model
         'supplier_id',
         'total'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
 }

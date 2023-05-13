@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\Category\CategoryListScreen;
 use App\Orchid\Screens\Color\ColorListScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -10,9 +11,12 @@ use App\Orchid\Screens\Examples\ExampleFieldsScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\ImportOrder\ImportOrderListScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\Product\ProductListScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\SalesOrder\SalesOrderListScreen;
 use App\Orchid\Screens\Size\SizeListScreen;
 use App\Orchid\Screens\Supplier\SupplierListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
@@ -102,6 +106,18 @@ Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('pla
 //Route::screen('idea', Idea::class, 'platform.screens.idea');
 
 
+//// Platform > System > Category
+Route::prefix('categories')->group(function () {
+    Route::screen('/', CategoryListScreen::class)
+        ->name('categories.index')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Category'), route('categories.index'));
+        });
+
+});
+
 //// Platform > System > Color
 Route::prefix('colors')->group(function () {
     Route::screen('/', ColorListScreen::class)
@@ -134,6 +150,42 @@ Route::prefix('suppliers')->group(function () {
             return $trail
                 ->parent('platform.index')
                 ->push(__('Supplier'), route('suppliers.index'));
+        });
+
+});
+
+//// Platform > System > Product
+Route::prefix('products')->group(function () {
+    Route::screen('/', ProductListScreen::class)
+        ->name('products.index')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Supplier'), route('products.index'));
+        });
+
+});
+
+//// Platform > System > ImportOrder
+Route::prefix('import-orders')->group(function () {
+    Route::screen('/', ImportOrderListScreen::class)
+        ->name('import_orders.index')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('ImportOrder'), route('import_orders.index'));
+        });
+
+});
+
+//// Platform > System > SalesOrder
+Route::prefix('sales-orders')->group(function () {
+    Route::screen('/', SalesOrderListScreen::class)
+        ->name('sales_orders.index')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('SalesOrder'), route('sales_orders.index'));
         });
 
 });
