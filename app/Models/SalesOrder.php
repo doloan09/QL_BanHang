@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enum\SalesOrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
 /**
@@ -21,7 +22,7 @@ use Orchid\Screen\AsSource;
  */
 class SalesOrder extends Model
 {
-    use HasFactory, AsSource;
+    use HasFactory, AsSource, Filterable;
 
     /**
      * @var string[]

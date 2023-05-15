@@ -5,6 +5,7 @@ namespace App\Orchid\Layouts\SalesOrder;
 use App\Models\SalesOrder;
 use Carbon\Carbon;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -29,6 +30,16 @@ class SalesOrderListLayout extends Table
     {
         return [
             TD::make('id', 'ID'),
+
+            TD::make('')
+                ->width(20)
+                ->render(function (SalesOrder $salesOrder) {
+                    return
+                        CheckBox::make('check[]')
+                            ->name('check[]')
+                            ->value($salesOrder->id)
+                            ->checked(false);
+                }),
 
             TD::make('Khách hàng')
                 ->render(function (SalesOrder $salesOrder){
@@ -64,9 +75,30 @@ class SalesOrderListLayout extends Table
             TD::make('Thao tác')
                 ->width(30)
                 ->render(function (SalesOrder $salesOrder) {
+                    if (!$salesOrder->time_confirm) {
+                        return Button::make('Xác nhận')
+                            ->icon('check')
+                            ->method('update', ['id' => $salesOrder->id, 'status' => $salesOrder->status->value]);
+                    }
+
                     return Button::make('Xác nhận')
-                        ->icon('close')
-                        ->method('update', ['id' => $salesOrder->id]);
+                        ->icon('check')
+                        ->set('disabled');
+
+                }),
+
+            TD::make()
+                ->width(30)
+                ->render(function (SalesOrder $salesOrder) {
+                    if (!$salesOrder->time_delivery && $salesOrder->time_confirm) {
+                        return Button::make('Giao hàng')
+                            ->icon('action-redo')
+                            ->method('update', ['id' => $salesOrder->id, 'status' => $salesOrder->status->value]);
+                    }
+
+                    return Button::make('Giao hàng')
+                        ->icon('action-redo')
+                        ->set('disabled');
 
                 }),
 
