@@ -47,6 +47,7 @@ class ColorListScreen extends Screen
             ModalToggle::make('Thêm mới')
                 ->modal('colorModal')
                 ->modalTitle('Thêm mới màu sắc')
+                ->set('style', 'color: white; background-color: orange; border-radius: 5px;')
                 ->method('store')
                 ->icon('plus'),
 

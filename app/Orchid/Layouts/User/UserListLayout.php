@@ -56,12 +56,14 @@ class UserListLayout extends Table
                     ->icon('options-vertical')
                     ->list([
 
-                        Link::make(__('Edit'))
+                        Link::make(__('Sửa'))
+                            ->set('style', 'color: blue;')
                             ->route('platform.systems.users.edit', $user->id)
                             ->icon('pencil'),
 
-                        Button::make(__('Delete'))
+                        Button::make(__('Xóa'))
                             ->icon('trash')
+                            ->set('style', 'color: red;')
                             ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
                             ->method('remove', [
                                 'id' => $user->id,

@@ -53,6 +53,7 @@ class ProductListScreen extends Screen
             ModalToggle::make('Thêm mới')
                 ->modal('createModal')
                 ->modalTitle('Thêm mới sản phẩm')
+                ->set('style', 'color: white; background-color: orange; border-radius: 5px;')
                 ->method('store')
                 ->icon('plus'),
 

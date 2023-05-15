@@ -70,8 +70,9 @@ class UserListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make(__('Add'))
+            Link::make(__('Thêm mới'))
                 ->icon('plus')
+                ->set('style', 'color: white; background-color: orange; border-radius: 5px;')
                 ->route('platform.systems.users.create'),
         ];
     }

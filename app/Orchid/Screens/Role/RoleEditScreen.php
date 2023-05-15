@@ -75,12 +75,14 @@ class RoleEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make(__('Save'))
+            Button::make(__('Lưu'))
                 ->icon('check')
+                ->set('style', 'color: white; background-color: orange; border-radius: 5px;')
                 ->method('save'),
 
-            Button::make(__('Remove'))
+            Button::make(__('Xóa'))
                 ->icon('trash')
+                ->set('style', 'color: white; background-color: red; border-radius: 5px;')
                 ->method('remove')
                 ->canSee($this->role->exists),
         ];

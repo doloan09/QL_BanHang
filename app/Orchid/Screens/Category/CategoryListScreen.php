@@ -48,6 +48,7 @@ class CategoryListScreen extends Screen
             ModalToggle::make('Thêm mới')
                 ->modal('createModal')
                 ->modalTitle('Thêm mới danh mục')
+                ->set('style', 'color: white; background-color: orange; border-radius: 5px;')
                 ->method('store')
                 ->icon('plus'),
 

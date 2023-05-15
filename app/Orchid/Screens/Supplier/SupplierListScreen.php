@@ -47,6 +47,7 @@ class SupplierListScreen extends Screen
             ModalToggle::make('Thêm mới')
                 ->modal('supplierModal')
                 ->modalTitle('Thêm mới nhà cung cấp')
+                ->set('style', 'color: white; background-color: orange; border-radius: 5px;')
                 ->method('store')
                 ->icon('plus'),
 
