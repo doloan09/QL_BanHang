@@ -41,4 +41,28 @@ class Product extends Model
         return $this->belongsTo(Supplier::class);
     }
 
+    public function colors($id)
+    {
+        $list = Product::query()
+            ->select('colors.id', 'colors.name')
+            ->join('product_colors', 'product_colors.product_id', 'products.id')
+            ->join('colors', 'colors.id', 'product_colors.color_id')
+            ->where('products.id', $id)
+            ->get();
+
+        return $list;
+    }
+
+    public function sizes($id)
+    {
+        $list = Product::query()
+            ->select('sizes.id', 'sizes.name')
+            ->join('product_sizes', 'product_sizes.product_id', 'products.id')
+            ->join('sizes', 'sizes.id', 'product_sizes.size_id')
+            ->where('products.id', $id)
+            ->get();
+
+        return $list;
+    }
+
 }

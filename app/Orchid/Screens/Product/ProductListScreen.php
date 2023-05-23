@@ -3,7 +3,9 @@
 namespace App\Orchid\Screens\Product;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\ColorProduct;
 use App\Models\Product;
+use App\Models\SizeProduct;
 use App\Orchid\Layouts\Product\ProductEditLayout;
 use App\Orchid\Layouts\Product\ProductListLayout;
 use App\Orchid\Layouts\Product\ProductFilterLayout;
@@ -92,7 +94,10 @@ class ProductListScreen extends Screen
     public function store(ProductRequest $request)
     {
         try {
-            Product::query()->create([
+            $color_list = $request->get('color_list');
+            $size_list  = $request->get('size_list');
+
+            $product = Product::query()->create([
                 'name'        => $request->get('name'),
                 'slug'        => Str::slug($request->get('name')),
                 'ingredient'  => $request->get('ingredient'),
@@ -101,8 +106,22 @@ class ProductListScreen extends Screen
                 'total'       => $request->get('total'),
             ]);
 
+            foreach ($color_list as $item) {
+                ColorProduct::query()->create([
+                    'color_id'   => $item,
+                    'product_id' => $product->id,
+                ]);
+            }
+
+            foreach ($size_list as $item) {
+                SizeProduct::query()->create([
+                    'size_id'    => $item,
+                    'product_id' => $product->id,
+                ]);
+            }
+
             Toast::success('Thêm mới thành công!');
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             Toast::error('Có lỗi khi thêm mới!');
         }
     }
@@ -110,7 +129,11 @@ class ProductListScreen extends Screen
     public function save(ProductRequest $request)
     {
         try {
-            Product::query()->findOrFail($request->get('id'))->update([
+            $id         = $request->get('id');
+            $color_list = $request->get('color_list');
+            $size_list  = $request->get('size_list');
+
+            Product::query()->findOrFail($id)->update([
                 'name'        => $request->get('name'),
                 'slug'        => Str::slug($request->get('name')),
                 'ingredient'  => $request->get('ingredient'),
@@ -118,6 +141,23 @@ class ProductListScreen extends Screen
                 'supplier_id' => $request->get('supplier_id'),
                 'total'       => $request->get('total'),
             ]);
+
+            ColorProduct::query()->where('product_id', $id)->delete();
+            SizeProduct::query()->where('product_id', $id)->delete();
+
+            foreach ($color_list as $item) {
+                ColorProduct::query()->create([
+                    'color_id'   => $item,
+                    'product_id' => $id,
+                ]);
+            }
+
+            foreach ($size_list as $item) {
+                SizeProduct::query()->create([
+                    'size_id'    => $item,
+                    'product_id' => $id,
+                ]);
+            }
 
             Toast::success('Cập nhật thành công!');
         } catch (\Exception) {
@@ -129,6 +169,9 @@ class ProductListScreen extends Screen
     {
         try {
             $id = $request->get('id');
+
+            ColorProduct::query()->where('product_id', $id)->delete();
+            SizeProduct::query()->where('product_id', $id)->delete();
             Product::query()->findOrFail($id)->delete();
 
             Toast::success('Xóa thành công!');

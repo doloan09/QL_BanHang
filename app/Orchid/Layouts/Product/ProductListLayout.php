@@ -35,6 +35,28 @@ class ProductListLayout extends Table
 
             TD::make('ingredient', 'Thành phần'),
 
+            TD::make('color', 'Màu sắc')
+                ->render(function (Product $product) {
+                    $colors     = $product->colors($product->id);
+                    $list_color = [];
+                    foreach ($colors as $color) {
+                        $list_color[] = $color->name;
+                    }
+
+                    return implode(', ', $list_color);
+                }),
+
+            TD::make('size', 'Kích thước')
+                ->render(function (Product $product) {
+                    $sizes     = $product->sizes($product->id);
+                    $list_size = [];
+                    foreach ($sizes as $size) {
+                        $list_size[] = $size->name;
+                    }
+
+                    return implode(', ', $list_size);
+                }),
+
             TD::make('category_id', 'Danh mục')
                 ->render(function (Product $product) {
                     $category = $product->category;
